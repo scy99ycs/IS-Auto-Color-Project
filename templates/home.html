@@ -1,0 +1,121 @@
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>home</title>
+<meta name="description" content="particles.js is a lightweight JavaScript library for creating particles.">
+<meta name="author" content="Vincent Garreau" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+{% load static %}
+<link rel="stylesheet" media="screen" href="{% static 'css/style_home.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}" />
+</head>
+<body>
+<div id="particles-js">
+    <div class="home">
+        <div class="home-top">
+            <div class="home-top-text">Autocoloring System</div>
+            <div class="home-logout-button">Logout</div>
+        </div>
+        <div class="home-img-area">
+            <div class="home-sketch clearfix">
+                <div class="home-sketch-text">Please select a sketch image</div>
+                <div class="home-sketch-input">
+                    <input type='file' id='chooseFile'>
+                    <div class="home-sketch-img">
+                        <img src='' id='picToCheck'/>
+                        <script>document
+                                .querySelector('#chooseFile')
+                                .addEventListener('change', function(){
+                                    //When the picture is not selected, clear the preview
+                                    if(this.files.length === 0){
+                                        document.querySelector('#picToCheck').src = '';
+                                        return;
+                                    }
+                                    //Instantiate a FileReader
+                                    var reader = new FileReader();
+
+                                    reader.onload = function (e) {
+                                        //When the reader is loaded, the content of the image is assigned to
+                                        document.querySelector('#picToCheck').src = e.target.result;
+                                    };
+
+                                    //Read the selected picture and convert it into dataURL format
+                                    reader.readAsDataURL(this.files[0]);
+                                }, false);
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="home-sketch clearfix">
+                <div class="home-sketch-text">Please select a style image</div>
+                <div class="home-sketch-input">
+                    <form method="post">
+                        <select id="style" onChange="selectOption()">
+                            {% for i in style_img_list_name_show %}
+                            <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="home-sketch-img">
+                            <img src={{ style_img_list_img_show }}/>
+
+                        </div>
+                    </form>>
+                </div>
+            </div>
+        </div>
+            <div style="text-align:center;vertical-align:middle;margin-top: 430px">
+                <input type="submit" value="Generate" class="home-generate-button" align ="center">
+            </div>
+        <div class="home-recommand-button">
+            You may also like
+        </div>
+    </div>
+<div class="sk-rotating-plane"></div>
+</div>
+
+<script src="{% static 'js/particles.min.js' %}"></script>
+<script src="{% static '/js/app.js' %}"></script>
+<script type="text/javascript">
+	function hasClass(elem, cls) {
+	  cls = cls || '';
+	  if (cls.replace(/\s/g, '').length == 0) return false; //当cls没有参数时，返回false
+	  return new RegExp(' ' + cls + ' ').test(' ' + elem.className + ' ');
+	}
+
+	function addClass(ele, cls) {
+	  if (!hasClass(ele, cls)) {
+	    ele.className = ele.className == '' ? cls : ele.className + ' ' + cls;
+	  }
+	}
+
+	function removeClass(ele, cls) {
+	  if (hasClass(ele, cls)) {
+	    var newClass = ' ' + ele.className.replace(/[\t\r\n]/g, '') + ' ';
+	    while (newClass.indexOf(' ' + cls + ' ') >= 0) {
+	      newClass = newClass.replace(' ' + cls + ' ', ' ');
+	    }
+	    ele.className = newClass.replace(/^\s+|\s+$/g, '');
+	  }
+	}
+		document.querySelector(".login-button").onclick = function(){
+				addClass(document.querySelector(".login"), "active")
+				setTimeout(function(){
+					addClass(document.querySelector(".sk-rotating-plane"), "active")
+					document.querySelector(".login").style.display = "none"
+				},800)
+				setTimeout(function(){
+					removeClass(document.querySelector(".login"), "active")
+					removeClass(document.querySelector(".sk-rotating-plane"), "active")
+					document.querySelector(".login").style.display = "block"
+					alert("Login succeed")
+
+				},5000)
+		}
+    function selectOption() {
+                var style_img = {{ style_img|safe }};
+
+
+            }
+</script>
+</body>
+</html>
